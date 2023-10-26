@@ -1,0 +1,19 @@
+[tool.ruff]
+select = [
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "W", # pycodestyle
+    "I", # isort
+    "N", # pep8-naming
+    "ANN", # function annotations
+    "B", # bugbear
+    "A", # built-ins
+    "DTZ", # flake8-datetimez
+]
+
+target-version = "py310"
+fix = true
+show-fixes = true
+
+[tool.ruff.flake8-annotations]
+suppress-none-returning = true
