@@ -1,0 +1,67 @@
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+jobs:
+  # - job: deployResources
+  #   displayName: "Deploy the infrastructure"
+  #   steps:
+  #     - task: TerraformInstaller@0
+  #       inputs:
+  #         terraformVersion: "0.14.8"
+
+  #     - task: TerraformTaskV1@0
+  #       inputs:
+  #         provider: "azurerm"
+  #         command: "init"
+  #         workingDirectory: "$(System.DefaultWorkingDirectory)/ops/stack"
+  #         environmentServiceNameAzureRM: "<Your ARM service connection>"
+
+  #     # - task: TerraformTaskV1@0
+  #     #   inputs:
+  #     #     provider: "azurerm"
+  #     #     command: "plan"
+  #     #     workingDirectory: "$(System.DefaultWorkingDirectory)"
+  #     #     environmentServiceNameAzureRM: "<Your ARM service connection>"
+
+  #     - task: TerraformTaskV1@0
+  #       inputs:
+  #         provider: "azurerm"
+  #         command: "apply"
+  #         workingDirectory: "$(System.DefaultWorkingDirectory)"
+  #         environmentServiceNameAzureRM: "<Your ARM service connection>"
+  #         commandOptions: "-auto-approve"
+  - job: deployAF
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.10"
+          addToPath: true
+          architecture: "x64"
+        displayName: "Use Python $(pythonVersion)"
+
+      - script: |
+          python -m pip install --upgrade pip && pip install --target="src/.python_packages/lib/site-packages" -r ./requirements.txt
+        displayName: "Install dependencies"
+
+      - task: ArchiveFiles@2
+        displayName: "Archive files"
+        inputs:
+          rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
+          includeRootFolder: false
+          archiveType: zip
+          archiveFile: $(Build.ArtifactStagingDirectory)/build$(Build.BuildId).zip
+          replaceExistingArchive: true
+
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: "$(Build.ArtifactStagingDirectory)/build$(Build.BuildId).zip"
+          artifactName: "drop"
+
+      - task: AzureFunctionApp@2
+        inputs:
+          azureSubscription: "example-federated-sc"
+          appType: "functionAppLinux"
+          appName: "deployfunctest"
+          package: "$(Pipeline.Workspace)/**/build$(Build.BuildId).zip"
