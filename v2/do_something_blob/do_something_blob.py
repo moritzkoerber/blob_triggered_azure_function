@@ -11,7 +11,7 @@ bp = func.Blueprint()
 
 @bp.blob_trigger(
     arg_name="blob",
-    path="mycontainer",
+    path="mycontainer/subfolder/{name}.csv",
     connection="StorageConnectionString",
 )
 def do_something_blob(blob: func.InputStream):
