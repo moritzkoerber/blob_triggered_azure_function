@@ -1,4 +1,4 @@
-requests
+deltalake
 pandas
 polars
-deltalake
+requests

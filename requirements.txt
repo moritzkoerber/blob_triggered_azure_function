@@ -1,3 +1,4 @@
-requests
-pandas
 deltalake
+pandas
+polars
+requests

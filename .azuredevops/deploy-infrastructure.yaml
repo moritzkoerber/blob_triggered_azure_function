@@ -41,14 +41,18 @@ jobs:
           architecture: "x64"
         displayName: "Use Python $(pythonVersion)"
 
+      ##############
+      # Deploy v2 AF
+      ##############
       - script: |
-          python -m pip install --upgrade pip && pip install --target="src/.python_packages/lib/site-packages" -r ./requirements.txt
+          python -m pip install --upgrade pip && \
+          pip install --target="v2/.python_packages/lib/site-packages" -r requirements.txt
         displayName: "Install dependencies"
 
       - task: ArchiveFiles@2
         displayName: "Archive files"
         inputs:
-          rootFolderOrFile: "$(System.DefaultWorkingDirectory)"
+          rootFolderOrFile: "$(System.DefaultWorkingDirectory)/v2"
           includeRootFolder: false
           archiveType: zip
           archiveFile: $(Build.ArtifactStagingDirectory)/build$(Build.BuildId).zip
