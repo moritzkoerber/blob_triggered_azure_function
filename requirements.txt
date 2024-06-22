@@ -2,3 +2,4 @@ deltalake
 pandas
 polars
 requests
+numpy~=1.26
