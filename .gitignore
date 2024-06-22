@@ -2,4 +2,5 @@
 .venv
 .vscode
 __azur*
+__*storage*
 *.pyc
