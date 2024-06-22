@@ -20,9 +20,10 @@ def delta_table_func(blob: func.InputStream):
     df = pl.read_parquet(io.BytesIO(blob.read()))
     df.write_delta(
         "abfss://test/delta_table",
+        mode="overwrite",
         storage_options={
-            "account_name": os.environ["AZ_STA_NAME"],
-            "account_key": os.environ["AZ_STA_KEY"],
+            "account_name": os.environ.get("AZ_STA_NAME"),
+            "account_key": os.environ.get("AZ_STA_KEY"),
         },
     )
     print(df)
