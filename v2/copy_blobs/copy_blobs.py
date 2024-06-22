@@ -1,6 +1,5 @@
 import io
 import logging
-import os
 
 import azure.functions as func
 import pandas as pd
@@ -9,31 +8,29 @@ logging.basicConfig()
 
 bp = func.Blueprint()
 
-STA_CONN_STRING = os.environ["STA_CONN_STRING"]
-
 
 @bp.function_name("copy_blobs")
 @bp.blob_trigger(
     arg_name="obj",
     path="mycontainer/{name}.csv",  # only copy csv files
-    connection=STA_CONN_STRING,  # for local:"StorageConnectionString",
+    connection="STA_CONN_STRING",  # for local:"StorageConnectionString",
 )
 @bp.blob_input(
     arg_name="inputblob",
     path="mycontainer/{name}.csv",
-    connection=STA_CONN_STRING,
+    connection="STA_CONN_STRING",
     data_type="binary",  # binary, stream, or string
 )
 @bp.blob_input(
     arg_name="inputblobstr",
     path="mycontainer/{name}.csv",
-    connection=STA_CONN_STRING,
+    connection="STA_CONN_STRING",
     data_type="string",
 )
 @bp.blob_output(
     arg_name="outputblob",
     path="myothercontainer/{name}.csv",
-    connection=STA_CONN_STRING,
+    connection="STA_CONN_STRING",
 )
 def copy_blobs(
     obj: func.InputStream,

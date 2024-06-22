@@ -13,7 +13,7 @@ bp = func.Blueprint()
 @bp.blob_trigger(
     arg_name="blob",
     path="mycontainer/{name}.parquet",
-    connection=os.environ["STA_CONN_STRING"],
+    connection="STA_CONN_STRING",
 )
 def delta_table_func(blob: func.InputStream):
     # type(blob.read()) is bytes
