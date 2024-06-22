@@ -3,6 +3,9 @@ trigger: none
 pool:
   vmImage: "ubuntu-latest"
 
+variables:
+  serviceConnection: "example-federated-sc"
+
 jobs:
   # - job: deployResources
   #   displayName: "Deploy the infrastructure"
@@ -41,6 +44,13 @@ jobs:
           architecture: "x64"
         displayName: "Use Python $(pythonVersion)"
 
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: "$(serviceConnection)"
+          KeyVaultName: "deployfunc-kvt"
+          SecretsFilter: "*"
+          RunAsPreJob: false
+
       ##############
       # Deploy v2 AF
       ##############
@@ -65,7 +75,11 @@ jobs:
 
       - task: AzureFunctionApp@2
         inputs:
-          azureSubscription: "example-federated-sc"
+          azureSubscription: "$(serviceConnection)"
           appType: "functionAppLinux"
           appName: "deployfunctest"
           package: "$(Pipeline.Workspace)/**/build$(Build.BuildId).zip"
+          appSettings: >
+            -STA_CONN_STRING $(STA-CONN-STRING)
+            -AZ_STA_NAME $(AZ-STA-NAME)
+            -AZ_STA_KEY $(AZ-STA-KEY)

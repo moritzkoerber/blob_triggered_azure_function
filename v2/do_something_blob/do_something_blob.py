@@ -1,5 +1,6 @@
 import io
 import logging
+import os
 
 import azure.functions as func
 import pandas as pd
@@ -12,7 +13,7 @@ bp = func.Blueprint()
 @bp.blob_trigger(
     arg_name="blob",
     path="mycontainer/subfolder/{name}.csv",
-    connection="StorageConnectionString",
+    connection=os.environ["STA_CONN_STRING"],
 )
 def do_something_blob(blob: func.InputStream):
     # type(blob.read()) is bytes

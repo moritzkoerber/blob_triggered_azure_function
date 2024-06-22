@@ -13,7 +13,7 @@ bp = func.Blueprint()
 @bp.blob_trigger(
     arg_name="blob",
     path="mycontainer/{name}.parquet",
-    connection="StorageConnectionString",
+    connection=os.environ["STA_CONN_STRING"],
 )
 def delta_table_func(blob: func.InputStream):
     # type(blob.read()) is bytes
@@ -22,8 +22,8 @@ def delta_table_func(blob: func.InputStream):
         "abfss://test/delta_table",
         mode="overwrite",
         storage_options={
-            "account_name": os.environ.get("AZ_STA_NAME"),
-            "account_key": os.environ.get("AZ_STA_KEY"),
+            "account_name": os.environ["AZ_STA_NAME"],
+            "account_key": os.environ["AZ_STA_KEY"],
         },
     )
     print(df)
