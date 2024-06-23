@@ -1,4 +1,9 @@
 [tool.ruff]
+fix = true
+show-fixes = true
+target-version = "py310"
+
+[tool.ruff.lint]
 select = [
     "E", # pycodestyle
     "F", # Pyflakes
@@ -11,9 +16,7 @@ select = [
     "DTZ", # flake8-datetimez
 ]
 
-target-version = "py310"
-fix = true
-show-fixes = true
+ignore = ["E501"]
 
 [tool.ruff.flake8-annotations]
 suppress-none-returning = true

@@ -15,7 +15,6 @@ repos:
     hooks:
       - id: ruff
       - id: ruff-format
-      - id: ruff-format
 
   - repo: https://github.com/sirosen/check-jsonschema
     rev: 0.28.5
@@ -46,3 +45,10 @@ repos:
             --skip-check=CKV_AZURE_206,
             --skip-check=CKV_AZURE_33,
           ]
+
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.8
+    hooks:
+      - id: ripsecrets
+        args:
+          - "--additional-pattern=[A-z0-9/+]{86}=="
