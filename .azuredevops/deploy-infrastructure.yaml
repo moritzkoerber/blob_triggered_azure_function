@@ -83,3 +83,5 @@ jobs:
             -STA_CONN_STRING $(STA-CONN-STRING)
             -AZ_STA_NAME $(AZ-STA-NAME)
             -AZ_STA_KEY $(AZ-STA-KEY)
+            -STA_MI_CONN__blobServiceUri $(STA-BLOB-URI)
+            -STA_MI_CONN__queueServiceUri $(STA-QUEUE-URI)
