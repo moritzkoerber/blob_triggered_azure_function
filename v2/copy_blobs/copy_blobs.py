@@ -13,7 +13,7 @@ bp = func.Blueprint()
 @bp.blob_trigger(
     arg_name="obj",
     path="mycontainer/{name}.csv",  # only copy csv files
-    connection="STA_CONN_STRING",  # for local:"StorageConnectionString",
+    connection="STA_CONN_STRING",  # for local development: "AzureWebJobsStorage",
 )
 @bp.blob_input(
     arg_name="inputblob",
